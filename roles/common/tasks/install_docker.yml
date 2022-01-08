@@ -25,13 +25,10 @@
   copy:
     dest: "/etc/docker/daemon.json"
     content: |
-      {"exec-opts": ["native.cgroupdriver=systemd"]}
-
-- name: Allow insecure registry
-  copy:
-    dest: "/etc/default/docker.json"
-    content: |
-      {“insecure-registries”: ["{{ master_ip }}:5000"]}
+      {
+        "exec-opts": ["native.cgroupdriver=systemd"],
+        "insecure-registries" : ["{{ master_ip }}:5000"]
+      }
 
 - name: Restart docker
   service:

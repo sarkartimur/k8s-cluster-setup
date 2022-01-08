@@ -1,8 +1,2 @@
-- name: Copy the join command to server location
-  copy: 
-    src: /vagrant/.data/join-command
-    dest: /tmp/join-command.sh 
-    mode: 0777
-
-- name: Join the node to cluster
-  command: sh /tmp/join-command.sh  
+- import_tasks: join_cluster.yml
+- import_tasks: calico_fix.yml
