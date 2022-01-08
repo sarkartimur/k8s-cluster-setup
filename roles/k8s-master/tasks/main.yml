@@ -1,1 +1,4 @@
 - import_tasks: init_cluster.yml
+- import_tasks: deploy_registry.yml
+- import_tasks: create_service_account.yml
+- import_tasks: deploy_dashboard.yml

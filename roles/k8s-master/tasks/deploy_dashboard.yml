@@ -1,0 +1,8 @@
+- name: Deploy dashboard
+  command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.4.0/aio/deploy/recommended.yaml
+
+- name: Expose dashboard through nodeport
+  command: "{{ item }}"
+  with_items:
+  - kubectl delete service kubernetes-dashboard -n kubernetes-dashboard
+  - kubectl apply -f /vagrant/config/dashboard_nodeport_patch.yaml

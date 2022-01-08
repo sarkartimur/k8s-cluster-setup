@@ -1,6 +1,12 @@
 - name: Initialize the Kubernetes cluster using kubeadm
   command: kubeadm init --apiserver-advertise-address="{{ ip_address }}" --apiserver-cert-extra-sans="{{ ip_address }}"  --node-name k8s-master --pod-network-cidr={{ net_mask }}/16
 
+- name: Setup kubeconfig for root
+  command: "{{ item }}"
+  with_items:
+    - mkdir -p /root/.kube
+    - cp -i /etc/kubernetes/admin.conf /root/.kube/config
+
 - name: Setup kubeconfig for vagrant user
   command: "{{ item }}"
   with_items:
