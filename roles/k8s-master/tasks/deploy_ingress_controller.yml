@@ -1,0 +1,11 @@
+- name: Remove master node taint
+  command: kubectl taint node {{ node_name }} node-role.kubernetes.io/master:NoSchedule-
+
+- name: Deploy nginx ingress controller
+  command: |
+    helm upgrade --install ingress-nginx ingress-nginx \
+    --repo https://kubernetes.github.io/ingress-nginx \
+    --namespace ingress-nginx --create-namespace
+
+# - name: Return master node taint
+#   command: kubectl taint node {{ node_name }} node-role.kubernetes.io/master:NoSchedule
