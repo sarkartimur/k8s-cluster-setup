@@ -20,6 +20,9 @@
       - kubeadm 
       - kubectl
 
+- name: Set kubelet extra args
+  shell: echo "Environment=\"KUBELET_EXTRA_ARGS=--node-ip={{ node_ip }}\"" >> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
 - name: Restart kubelet
   service:
     name: kubelet
