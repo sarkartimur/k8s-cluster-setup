@@ -5,4 +5,4 @@
   command: "{{ item }}"
   with_items:
   - kubectl delete service kubernetes-dashboard -n kubernetes-dashboard
-  - kubectl apply -f /vagrant/config/dashboard_nodeport_patch.yaml
+  - kubectl apply -f /home/vagrant/config/dashboard_nodeport_patch.yaml

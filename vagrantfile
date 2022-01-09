@@ -4,6 +4,7 @@ NET_MASK = "10.244.0.0"
 ADDRESS_PREFIX = "10.1.0.0"
 MASTER_IP = ADDRESS_PREFIX[0...-1] + "100"
 WORKER_IP = ADDRESS_PREFIX[0...-1]
+METALLB_ADDRESS_RANGE = "10.1.0.200-10.1.0.254"
 WORKER_COUNT = 2
 WORKER_MEMORY = 1024
 WORKER_CPU = 1
@@ -26,7 +27,8 @@ Vagrant.configure("2") do |config|
                 master_ip: MASTER_IP,
                 net_mask: NET_MASK,
                 node_name: master.vm.hostname,
-                node_ip: MASTER_IP
+                node_ip: MASTER_IP,
+                metallb_address_range: METALLB_ADDRESS_RANGE
             }
         end
     end
