@@ -1,5 +1,6 @@
 BOX = "ubuntu/xenial64"
 PROVIDER = "virtualbox"
+
 CIDR = "192.168.0.0/16"
 ADDRESS_PREFIX = "10.1.0."
 MASTER_IP = ADDRESS_PREFIX + "100"
@@ -11,28 +12,6 @@ WORKER_COUNT = 2
 WORKER_MEMORY = 1024
 WORKER_CPU = 1
 
-def setup_guest(guest, playbook_path, hostname, guest_ip, memory, cpus, extra_vars) 
-    guest.vm.box = BOX
-    guest.vm.provider PROVIDER do |p|
-        p.memory = memory
-        p.cpus = cpus
-    end
-    guest.vm.network "private_network", ip: guest_ip
-    guest.vm.hostname = hostname
-
-    common_extra_vars = {
-        master_ip: MASTER_IP,
-        node_name: guest.vm.hostname
-    }
-    extra_vars = common_extra_vars.merge(extra_vars)
-
-    guest.vm.provision "ansible_local" do |ansible|
-        ansible.playbook = playbook_path
-        ansible.verbose = "vvv"
-        ansible.galaxy_roles_path = "roles"
-        ansible.extra_vars = extra_vars
-    end 
-end
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -60,4 +39,28 @@ Vagrant.configure("2") do |config|
             setup_guest(node, playbook_path, worker_vm, worker_ip, WORKER_MEMORY, WORKER_CPU, extra_vars)
         end
     end
+end
+
+
+def setup_guest(guest, playbook_path, hostname, guest_ip, memory, cpus, extra_vars) 
+    guest.vm.box = BOX
+    guest.vm.provider PROVIDER do |p|
+        p.memory = memory
+        p.cpus = cpus
+    end
+    guest.vm.network "private_network", ip: guest_ip
+    guest.vm.hostname = hostname
+
+    common_extra_vars = {
+        master_ip: MASTER_IP,
+        node_name: guest.vm.hostname
+    }
+    extra_vars = common_extra_vars.merge(extra_vars)
+
+    guest.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = playbook_path
+        ansible.verbose = "vvv"
+        ansible.galaxy_roles_path = "roles"
+        ansible.extra_vars = extra_vars
+    end 
 end
