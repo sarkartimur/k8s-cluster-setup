@@ -1,6 +1,0 @@
-- name: Copy templates
-  template:
-    src: "{{ item }}" 
-    dest: "/home/vagrant/config/"
-  with_fileglob:
-  - ../templates/*.yaml

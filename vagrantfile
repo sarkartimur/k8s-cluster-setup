@@ -1,56 +1,63 @@
 BOX = "ubuntu/xenial64"
 PROVIDER = "virtualbox"
-NET_MASK = "10.244.0.0"
+CIDR = "192.168.0.0/16"
 ADDRESS_PREFIX = "10.1.0."
 MASTER_IP = ADDRESS_PREFIX + "100"
 METALLB_ADDRESS_RANGE = ADDRESS_PREFIX + "200-" + ADDRESS_PREFIX + "254"
+
+MASTER_MEMORY = 2048
+MASTER_CPU = 2
 WORKER_COUNT = 2
 WORKER_MEMORY = 1024
 WORKER_CPU = 1
 
+def setup_guest(guest, playbook_path, hostname, guest_ip, memory, cpus, extra_vars) 
+    guest.vm.box = BOX
+    guest.vm.provider PROVIDER do |p|
+        p.memory = memory
+        p.cpus = cpus
+    end
+    guest.vm.network "private_network", ip: guest_ip
+    guest.vm.hostname = hostname
+
+    common_extra_vars = {
+        master_ip: MASTER_IP,
+        node_name: guest.vm.hostname
+    }
+    extra_vars = common_extra_vars.merge(extra_vars)
+
+    guest.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = playbook_path
+        ansible.verbose = "vvv"
+        ansible.galaxy_roles_path = "roles"
+        ansible.extra_vars = extra_vars
+    end 
+end
+
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
       
-    config.vm.define "k8s-master" do |master|
-        master.vm.box = BOX
-        master.vm.provider PROVIDER do |p|
-            p.memory = 2048
-            p.cpus = 2
-        end
-        master.vm.network "private_network", ip: MASTER_IP
-        master.vm.hostname = "k8s-master"
-        master.vm.provision "ansible_local" do |ansible|
-            ansible.playbook = "playbooks/master-playbook.yml"
-            ansible.verbose = "vvv"
-            ansible.extra_vars = {
-                master_ip: MASTER_IP,
-                net_mask: NET_MASK,
-                node_name: master.vm.hostname,
-                node_ip: MASTER_IP,
-                metallb_address_range: METALLB_ADDRESS_RANGE
-            }
-        end
+    master_vm = "k8s-master"
+    config.vm.define master_vm do |master|
+        extra_vars = {
+            cidr: CIDR,
+            node_ip: MASTER_IP,
+            metallb_address_range: METALLB_ADDRESS_RANGE
+        }
+        playbook_path = "playbooks/master-playbook.yml"
+        setup_guest(master, playbook_path, master_vm, MASTER_IP, MASTER_MEMORY, MASTER_CPU, extra_vars)
     end
 
     (1..WORKER_COUNT).each do |i|
-        config.vm.define "node-#{i}" do |node|
-            node.vm.box = BOX
-            node.vm.provider PROVIDER do |p|
-                p.memory = WORKER_MEMORY
-                p.cpus = WORKER_CPU
-            end
+        worker_vm = "node-#{i}"
+        config.vm.define worker_vm do |node|
             worker_ip_suf = 100 + i
             worker_ip = ADDRESS_PREFIX + "#{worker_ip_suf}"
-            node.vm.network "private_network", ip: worker_ip
-            node.vm.hostname = "node-#{i}"
-            node.vm.provision "ansible_local" do |ansible|
-                ansible.playbook = "playbooks/node-playbook.yml"
-                ansible.extra_vars = {
-                    master_ip: MASTER_IP,
-                    node_name: node.vm.hostname,
-                    node_ip: worker_ip
-                }
-            end
+            extra_vars = {
+                node_ip: worker_ip
+            }
+            playbook_path = "playbooks/node-playbook.yml"
+            setup_guest(node, playbook_path, worker_vm, worker_ip, WORKER_MEMORY, WORKER_CPU, extra_vars)
         end
     end
 end
