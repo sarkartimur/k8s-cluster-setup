@@ -59,7 +59,7 @@ def setup_guest(guest, playbook_path, hostname, guest_ip, memory, cpus, extra_va
 
     guest.vm.provision "ansible_local" do |ansible|
         ansible.playbook = playbook_path
-        ansible.verbose = "vvv"
+        ansible.verbose = "v"
         ansible.galaxy_roles_path = "roles"
         ansible.extra_vars = extra_vars
     end 

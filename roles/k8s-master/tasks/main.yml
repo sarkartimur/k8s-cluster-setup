@@ -4,9 +4,14 @@
     dest: "/home/vagrant/config/"
   with_fileglob:
   - ../templates/*.yaml
-- import_tasks: install_helm.yml
+
 - import_tasks: init_cluster.yml
 - import_tasks: create_service_account.yml
 - import_tasks: deploy_dashboard.yml
+
+- import_tasks: install_helm.yml
+- import_tasks: install_nfs.yml
+
 - import_tasks: deploy_metallb.yml
+- import_tasks: deploy_nfs_provisioner.yml
 - import_tasks: deploy_registry.yml

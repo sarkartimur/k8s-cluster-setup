@@ -1,0 +1,8 @@
+- name: Add helm repo
+  command: helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+  
+- name: Install NFS Subdirectory External Provisioner Helm Chart
+  command: |
+    helm install my-release nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+    --set nfs.server={{ node_ip }} \
+    --set nfs.path=/mnt/k8s-pv

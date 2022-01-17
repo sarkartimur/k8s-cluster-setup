@@ -1,1 +1,2 @@
+- import_tasks: install_nfs_common.yml
 - import_tasks: join_cluster.yml
