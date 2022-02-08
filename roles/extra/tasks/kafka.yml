@@ -1,0 +1,7 @@
+- name: Add bitnami helm repo
+  command: helm repo add bitnami https://charts.bitnami.com/bitnami
+    
+- name: Install kafka chart    
+  command: |
+    helm install kafka bitnami/kafka --namespace kafka --create-namespace \
+    --values /home/vagrant/helm-values/kafka-values.yaml

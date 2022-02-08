@@ -3,6 +3,10 @@
   
 - name: Install NFS Subdirectory External Provisioner Helm Chart
   command: |
-    helm install my-release nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+    helm install nfs-dynamic-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace dynamic-nfs --create-namespace \
     --set nfs.server={{ node_ip }} \
     --set nfs.path=/mnt/k8s-pv
+
+- name: Create persistent volume
+  command: kubectl apply -f /home/vagrant/config/persistentvolume.yaml
+    

@@ -1,0 +1,8 @@
+- name: Copy templates
+  template:
+    src: "{{ item }}" 
+    dest: "/home/vagrant/helm-values/"
+  with_fileglob:
+  - ../templates/*.yaml
+
+- import_tasks: kafka.yml

@@ -1,0 +1,25 @@
+# Default replication factors for automatically created topics
+defaultReplicationFactor: 2
+# The replication factor for the offsets topic
+offsetsTopicReplicationFactor: 2
+# The replication factor for the transaction topic
+transactionStateLogReplicationFactor: 2
+
+# Number of Kafka nodes
+replicaCount: 2
+
+# Default replication factor for topics when unspecified
+provisioning:
+  replicationFactor: 2
+
+global:
+  storageClass: nfs-client
+persistence:
+  storageClass: nfs-client
+logPersistence:
+  storageClass: nfs-client
+zookeeper:
+  persistence:
+    storageClass: nfs-client
+  # Number of ZooKeeper nodes
+  replicaCount: 2
