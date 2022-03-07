@@ -1,6 +1,6 @@
 - name: Add an apt signing key for Docker
   apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
+    file: /vagrant/apt-keys/docker.gpg
     state: present
 
 - name: Add apt repository for stable version
@@ -27,7 +27,7 @@
     content: |
       {
         "exec-opts": ["native.cgroupdriver=systemd"],
-        "insecure-registries" : ["{{ master_ip }}:5000"]
+        "insecure-registries" : ["{{ master_ip }}:5000","https://k8s.gcr.io"]
       }
 
 - name: Restart docker

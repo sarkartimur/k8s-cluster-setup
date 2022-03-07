@@ -1,3 +1,10 @@
+- name: Copy certs
+  template:
+    src: "{{ item }}" 
+    dest: "/etc/ssl/certs"
+  with_fileglob:
+  - ../templates/*.cer
+
 - name: Install packages that allow apt to be used over HTTPS
   apt:
     name: "{{ packages }}"

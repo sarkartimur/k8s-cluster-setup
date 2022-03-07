@@ -1,6 +1,6 @@
 - name: Add an apt signing key for Helm
   apt_key:
-    url: https://baltocdn.com/helm/signing.asc
+    file: /vagrant/apt-keys/helm.gpg
     state: present
 
 - name: Adding apt repository for Helm

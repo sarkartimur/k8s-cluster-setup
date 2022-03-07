@@ -21,7 +21,8 @@ Vagrant.configure("2") do |config|
         extra_vars = {
             cidr: CIDR,
             node_ip: MASTER_IP,
-            metallb_address_range: METALLB_ADDRESS_RANGE
+            metallb_address_range: METALLB_ADDRESS_RANGE,
+            ansible_python_interpreter:"/usr/bin/python3"
         }
         playbook_path = "playbooks/master-playbook.yml"
         setup_guest(master, playbook_path, master_vm, MASTER_IP, MASTER_MEMORY, MASTER_CPU, extra_vars)
@@ -44,6 +45,7 @@ end
 
 def setup_guest(guest, playbook_path, hostname, guest_ip, memory, cpus, extra_vars) 
     guest.vm.box = BOX
+    guest.vm.box_download_insecure = true
     guest.vm.provider PROVIDER do |p|
         p.memory = memory
         p.cpus = cpus
@@ -57,10 +59,15 @@ def setup_guest(guest, playbook_path, hostname, guest_ip, memory, cpus, extra_va
     }
     extra_vars = common_extra_vars.merge(extra_vars)
 
+    # install ansible
+    guest.vm.provision "shell", inline: 'echo "deb http://ppa.launchpad.net/ansible/ansible-2.6/ubuntu xenial main" | sudo tee -a /etc/apt/sources.list.d/ansible.list'
+    guest.vm.provision "shell", inline: 'apt-get update && apt-get install -y --force-yes ansible --option "Dpkg::Options::=--force-confold"'
+
     guest.vm.provision "ansible_local" do |ansible|
         ansible.playbook = playbook_path
         ansible.verbose = "v"
         ansible.galaxy_roles_path = "roles"
         ansible.extra_vars = extra_vars
+        ansible.install = false
     end 
 end
