@@ -9,4 +9,6 @@
 
 - name: Create persistent volume
   command: kubectl apply -f /home/vagrant/config/persistentvolume.yaml
-    
+
+- name: Set default storage class
+  command: "kubectl patch storageclass nfs-client -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'"
