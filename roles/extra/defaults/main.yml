@@ -1,0 +1,4 @@
+kafka_repl: 1
+
+kubegres_pass: pass
+kubegres_repl: 1
