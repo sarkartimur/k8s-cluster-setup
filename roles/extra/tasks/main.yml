@@ -4,6 +4,9 @@
     dest: "/home/vagrant/k8s/"
   with_fileglob:
   - ../templates/*.yaml
+  tags: [ always ]
 
 - import_tasks: kafka.yml
+  tags: [ kafka ]
 - import_tasks: kubegres.yml
+  tags: [ kubegres ]
