@@ -10,3 +10,5 @@
   tags: [ kafka ]
 - import_tasks: kubegres.yml
   tags: [ kubegres ]
+- import_tasks: mysql.yml
+  tags: [ mysql ]
