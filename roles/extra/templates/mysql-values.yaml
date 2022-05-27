@@ -6,11 +6,11 @@ auth:
   ## @param auth.rootPassword Password for the `root` user. Ignored if existing secret is provided
   rootPassword: "pass"
   ## @param auth.database Name for a custom database to create
-  database: my-database
+  database: daps
   ## @param auth.username Name for a custom user to create
-  username: ""
+  username: "admin"
   ## @param auth.password Password for the new user. Ignored if existing secret is provided
-  password: ""
+  password: "Admin1234!"
   ## @param auth.replicationUser MySQL replication user
   replicationUser: replicator
   ## @param auth.replicationPassword MySQL replication user password. Ignored if existing secret is provided
