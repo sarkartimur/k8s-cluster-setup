@@ -1,0 +1,8 @@
+- name: Apply kubegres resource
+  command: kubectl apply -f https://raw.githubusercontent.com/reactive-tech/kubegres/v1.15/kubegres.yaml
+    
+- name: Create kubegres namespace  
+  command: kubectl create ns kubegres
+
+- name: Apply kubegres resources
+  command: kubectl apply -n kubegres -f /home/vagrant/k8s/kubegres.yaml

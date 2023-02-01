@@ -1,8 +1,14 @@
 - name: Copy templates
   template:
     src: "{{ item }}" 
-    dest: "/home/vagrant/helm-values/"
+    dest: "/home/vagrant/k8s/"
   with_fileglob:
   - ../templates/*.yaml
+  tags: [ always ]
 
 - import_tasks: kafka.yml
+  tags: [ kafka ]
+- import_tasks: kubegres.yml
+  tags: [ kubegres ]
+- import_tasks: mysql.yml
+  tags: [ mysql ]

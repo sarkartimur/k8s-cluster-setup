@@ -1,0 +1,7 @@
+- name: Add bitnami helm repo
+  command: helm repo add bitnami https://charts.bitnami.com/bitnami
+
+- name: Install mysql chart    
+  command: |
+    helm install mysql bitnami/mysql --namespace mysql --create-namespace \
+    --values /home/vagrant/k8s/mysql-values.yaml

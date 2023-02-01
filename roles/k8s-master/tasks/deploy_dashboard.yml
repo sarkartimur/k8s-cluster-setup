@@ -6,3 +6,6 @@
   with_items:
   - kubectl delete service kubernetes-dashboard -n kubernetes-dashboard
   - kubectl apply -f /home/vagrant/config/dashboard_nodeport_patch.yaml
+
+- name: Patch dashboard token ttl
+  command: kubectl patch deployment kubernetes-dashboard -n kubernetes-dashboard --patch-file /home/vagrant/config/dashboard_token_ttl_patch.yaml

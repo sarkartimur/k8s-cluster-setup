@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mypostgres
+  namespace: kubegres
+  labels:
+    app: mypostgres
+    replicationRole: primary
+spec:
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: mypostgres
+    replicationRole: primary
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mypostgres-secret
+  namespace: kubegres
+type: Opaque
+stringData:
+  superUserPassword: {{ kubegres_pass }}
+  replicationUserPassword: {{ kubegres_pass }}
+---
+apiVersion: kubegres.reactive-tech.io/v1
+kind: Kubegres
+metadata:
+  name: mypostgres
+  namespace: kubegres
+spec:
+   replicas: {{ kubegres_repl }}
+   image: postgres:14.1
+   database:
+      size: 10Gi
+   env:
+      - name: POSTGRES_PASSWORD
+        valueFrom:
+           secretKeyRef:
+              name: mypostgres-secret
+              key: superUserPassword
+      - name: POSTGRES_REPLICATION_PASSWORD
+        valueFrom:
+           secretKeyRef:
+              name: mypostgres-secret
+              key: replicationUserPassword  
