@@ -1,5 +1,5 @@
 - name: Deploy metallb
   command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
 
-- name: Add metallb configmap
-  command: kubectl create -f /home/vagrant/config/metallb_cm.yaml
+- name: Add address pool and l2advert
+  command: kubectl apply -f /home/vagrant/config/metallb.yaml
