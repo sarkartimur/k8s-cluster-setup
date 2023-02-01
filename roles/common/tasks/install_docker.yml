@@ -5,7 +5,7 @@
 
 - name: Add apt repository for stable version
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
     state: present
 
 - name: Install docker and its dependecies
@@ -20,6 +20,15 @@
     - containerd.io
   notify:
     - docker status
+
+- name: Remove default containerd config
+  command: rm /etc/containerd/config.toml
+
+- name: Restart containerd
+  service:
+    name: containerd
+    daemon_reload: yes
+    state: restarted
 
 - name: Change docker cgroup
   copy:

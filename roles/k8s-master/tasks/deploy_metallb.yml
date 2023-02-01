@@ -1,11 +1,5 @@
-- name: Remove master node taint
-  command: kubectl taint node {{ node_name }} node-role.kubernetes.io/master:NoSchedule-
-  
-- name: Create metallb namespace
-  command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/namespace.yaml
-
 - name: Deploy metallb
-  command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/metallb.yaml
+  command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
 
 - name: Add metallb configmap
   command: kubectl create -f /home/vagrant/config/metallb_cm.yaml
