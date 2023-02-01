@@ -21,8 +21,10 @@
   notify:
     - docker status
 
-- name: Remove default containerd config
-  command: rm /etc/containerd/config.toml
+- name: Replace default containerd config
+  template:
+    src: "config.toml"
+    dest: "/etc/containerd/config.toml"
 
 - name: Restart containerd
   service:
