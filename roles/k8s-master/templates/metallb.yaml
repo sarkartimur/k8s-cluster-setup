@@ -10,6 +10,8 @@ spec:
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: l2
+  name: l2-advertisement
   namespace: metallb-system
-apiVersion: v1
+spec:
+  ipAddressPools:
+    - address-pool
