@@ -12,7 +12,7 @@
 - import_tasks: install_helm.yml
 - import_tasks: install_nfs.yml
 
-# todo addresspool installation throws errors, for now install metallb manually after cluster initialization
+# todo addresspool installation throws errors, for now install metallb manually after cluster initialization (see https://github.com/metallb/metallb/issues/1597)
 # - import_tasks: deploy_metallb.yml
 - import_tasks: deploy_nfs_provisioner.yml
 - import_tasks: deploy_registry.yml
