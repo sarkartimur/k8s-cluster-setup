@@ -144,14 +144,14 @@ version = 2
       [plugins."io.containerd.grpc.v1.cri".registry.auths]
 
       [plugins."io.containerd.grpc.v1.cri".registry.configs]
-        [plugins."io.containerd.grpc.v1.cri".registry.configs."10.1.0.100:5000".tls]
+        [plugins."io.containerd.grpc.v1.cri".registry.configs."{{ master_ip }}:5000".tls]
           insecure_skip_verify = true
 
       [plugins."io.containerd.grpc.v1.cri".registry.headers]
 
       [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."10.1.0.100:5000"]
-          endpoint = ["http://10.1.0.100:5000"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."{{ master_ip }}:5000"]
+          endpoint = ["http://{{ master_ip }}:5000"]
 
   [plugins."io.containerd.internal.v1.opt"]
     path = "/opt/containerd"
