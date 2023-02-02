@@ -1,9 +1,6 @@
 - name: Initialize the Kubernetes cluster using kubeadm
   command: kubeadm init --apiserver-advertise-address="{{ master_ip }}" --apiserver-cert-extra-sans="{{ master_ip }}"  --node-name k8s-master --pod-network-cidr={{ cidr }}
 
-- name: Remove master node taint
-  command: kubectl taint node {{ node_name }} node-role.kubernetes.io/control-plane:NoSchedule-  
-
 - name: Setup kubeconfig for root
   command: "{{ item }}"
   with_items:
@@ -16,7 +13,10 @@
     - mkdir -p /home/vagrant/.kube
     - cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
     - chown vagrant:vagrant /home/vagrant/.kube/config
-    
+
+- name: Remove master node taint
+  command: kubectl taint node {{ node_name }} node-role.kubernetes.io/control-plane:NoSchedule-      
+
 - name: Install calico pod network
   become: false
   command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml

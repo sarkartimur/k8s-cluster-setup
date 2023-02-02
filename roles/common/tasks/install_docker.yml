@@ -15,7 +15,7 @@
     update_cache: yes
   vars:
     packages:
-    - docker-ce 
+    - docker-ce=5:20.10.23~3-0~ubuntu-bionic
     - docker-ce-cli 
     - containerd.io
   notify:
