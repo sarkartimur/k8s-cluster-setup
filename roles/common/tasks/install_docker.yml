@@ -16,8 +16,8 @@
   vars:
     packages:
     - docker-ce=5:20.10.23~3-0~ubuntu-bionic
-    - docker-ce-cli 
-    - containerd.io
+    - docker-ce-cli=5:23.0.0-1~ubuntu.18.04~bionic
+    - containerd.io=1.6.16-1
   notify:
     - docker status
 
